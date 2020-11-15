@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { HeaderButtons, Items } from "react-navigation-header-buttons";
-import PropTypes from "prop-types";
+import { View, FlatList, StyleSheet } from "react-native";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { useSelector } from "react-redux";
 
 import CustomHeaderButton from "../components/CustomHeaderButton";
+import PlaceItem from "../components/PlaceItem";
 
 const styles = StyleSheet.create({
   screen: {
@@ -13,33 +14,41 @@ const styles = StyleSheet.create({
   }
 })
 
-const PlacesListScreen = () => {
+const PlacesListScreen = ({ navigation }) => {
+  const places = useSelector((state) => state.places.places);
+
   return (
     <View style={styles.screen}>
-      <Text>PlacesListScreen</Text>
+      <FlatList
+        data={places}
+        keyExtractor={(item) => item.id}
+        renderItem={(itemData) => (
+          <PlaceItem
+            image={null}
+            title={itemData.item.title}
+            address={null}
+            onSelect={() => navigation.navigate("PlaceDetail", {
+              id: itemData.item.id,
+              title: itemData.item.title
+            })}
+          />
+        )}
+      />
     </View>
   );
 };
 
-PlacesListScreen.navigationOptions = ({ navigation }) => {
-  return {
-    headerTitle: "All Places",
-    headerRight: () => (
-      <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
-        <Items
-          title="Add"
-          iconName="ios-add"
-          onPress={() => navigation.navigate("NewPlace")}
-        />
-      </HeaderButtons>
-    )
-  };
-};
-
-PlacesListScreen.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func
-  })
-};
+PlacesListScreen.navigationOptions = ({ navigation }) => ({
+  headerTitle: "All Places",
+  headerRight: () => (
+    <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
+      <Item
+        title="Add"
+        iconName="ios-add"
+        onPress={() => navigation.navigate("NewPlace")}
+      />
+    </HeaderButtons>
+  )
+});
 
 export default PlacesListScreen;

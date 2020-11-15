@@ -9,12 +9,19 @@ const styles = StyleSheet.create({
   }
 })
 
-const PlaceDetailScreen = () => {
+const PlaceDetailScreen = ({ navigation }) => {
+  console.log(navigation.getParam("id"));
   return (
     <View style={styles.screen}>
       <Text>PlaceDetailScreen</Text>
     </View>
   );
+};
+
+PlaceDetailScreen.navigationOptions = ({ navigation }) => {
+  return {
+    headerTitle: navigation.getParam("title")
+  };
 };
 
 export default PlaceDetailScreen;
