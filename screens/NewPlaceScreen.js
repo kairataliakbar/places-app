@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, Button, ScrollView, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 
+import SelectImage from "../components/SelectImage";
 import Colors from "../constants/Colors";
 import * as placesActions from "../store/placesActions";
 
@@ -27,10 +28,11 @@ const styles = StyleSheet.create({
 
 const NewPlaceScreen = ({ navigation }) => {
   const [title, setTitle] = useState("");
+  const [selectedImage, setSelectedImage] = useState();
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    dispatch(placesActions.addPlace(title));
+    dispatch(placesActions.addPlace(title, selectedImage));
     navigation.goBack();
   };
 
@@ -43,6 +45,7 @@ const NewPlaceScreen = ({ navigation }) => {
           onChangeText={(text) => setTitle(text)}
           style={styles.textInput}
         />
+        <SelectImage onSelectImage={(imageUri) => setSelectedImage(imageUri)} />
         <Button
           title="Save Place"
           color={Colors.primary}
