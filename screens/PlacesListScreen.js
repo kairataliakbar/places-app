@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, FlatList, StyleSheet } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import CustomHeaderButton from "../components/CustomHeaderButton";
 import PlaceItem from "../components/PlaceItem";
+import * as placesActions from "../store/placesActions";
 
 const styles = StyleSheet.create({
   screen: {
@@ -16,6 +17,11 @@ const styles = StyleSheet.create({
 
 const PlacesListScreen = ({ navigation }) => {
   const places = useSelector((state) => state.places.places);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(placesActions.loadPlaces());
+  }, [dispatch]);
 
   return (
     <View style={styles.screen}>

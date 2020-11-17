@@ -7,6 +7,14 @@ import ReduxThunk from "redux-thunk";
 
 import AppNavigation from "./navigation/AppNavigation";
 import placesReducers from "./store/placesReducer";
+import { init } from "./helpers/db";
+
+init()
+  .then(() => console.log("Initialized database!"))
+  .catch((err) => {
+    console.log("Initializing database failed!")
+    console.log(err);
+  });
 
 export default function App() {
   const [fontLoading, setFontLoading] = useState(false);

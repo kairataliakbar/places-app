@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, ScrollView, StyleSheet } from "react-native";
+import { View, Text, TextInput, Button, ScrollView, StyleSheet, Alert } from "react-native";
 import { useDispatch } from "react-redux";
 
 import SelectImage from "../components/SelectImage";
@@ -32,8 +32,12 @@ const NewPlaceScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    dispatch(placesActions.addPlace(title, selectedImage));
-    navigation.goBack();
+    if (title.length > 0 && selectedImage) {
+      dispatch(placesActions.addPlace(title, selectedImage));
+      navigation.goBack();
+      return;
+    }
+    return Alert.alert("Error", "All fields required!", [{ text: "Okey" }]);
   };
 
   return (
