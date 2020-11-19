@@ -3,6 +3,7 @@ import { View, Text, TextInput, Button, ScrollView, StyleSheet, Alert } from "re
 import { useDispatch } from "react-redux";
 
 import SelectImage from "../components/SelectImage";
+import SelectLocation from "../components/SelectLocation";
 import Colors from "../constants/Colors";
 import * as placesActions from "../store/placesActions";
 
@@ -50,6 +51,7 @@ const NewPlaceScreen = ({ navigation }) => {
           style={styles.textInput}
         />
         <SelectImage onSelectImage={(imageUri) => setSelectedImage(imageUri)} />
+        <SelectLocation />
         <Button
           title="Save Place"
           color={Colors.primary}
