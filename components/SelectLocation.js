@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View, Text, Button, Alert, StyleSheet, ActivityIndicator,
 } from "react-native";
@@ -33,9 +33,18 @@ const styles = StyleSheet.create({
   },
 });
 
-const SelectLocation = ({ navigation }) => {
+const SelectLocation = ({ navigation, onSelectLocation }) => {
   const [pickedLoaction, setPickedLocation] = useState();
   const [isLoading, setIsLoading] = useState(false);
+
+  const mapPickedLocation = navigation.getParam("pickedLocation");
+
+  useEffect(() => {
+    if (mapPickedLocation) {
+      setPickedLocation(mapPickedLocation);
+      onSelectLocation(mapPickedLocation);
+    }
+  }, [mapPickedLocation]);
 
   const getPermissions = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -59,8 +68,12 @@ const SelectLocation = ({ navigation }) => {
       setIsLoading(true);
       const userLocation = await Location.getCurrentPositionAsync();
       setPickedLocation({
-        lat: userLocation.coords.latitude,
-        lng: userLocation.coords.longitude,
+        latitude: userLocation.coords.latitudeitude,
+        longitude: userLocation.coords.longitude,
+      });
+      onSelectLocation({
+        latitude: userLocation.coords.latitude,
+        longitude: userLocation.coords.longitude,
       });
     } catch (err) {
       Alert.alert(

@@ -32,15 +32,17 @@ const styles = StyleSheet.create({
 const NewPlaceScreen = ({ navigation }) => {
   const [title, setTitle] = useState("");
   const [selectedImage, setSelectedImage] = useState();
+  const [selectedLocation, setSelectedLocation] = useState();
+
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
     if (title.length > 0 && selectedImage) {
-      dispatch(placesActions.addPlace(title, selectedImage));
+      dispatch(placesActions.addPlace(title, selectedImage, selectedLocation));
       navigation.goBack();
       return;
     }
-    return Alert.alert("Error", "All fields required!", [{ text: "Okey" }]);
+    Alert.alert("Error", "All fields required!", [{ text: "Okey" }]);
   };
 
   return (
@@ -53,7 +55,10 @@ const NewPlaceScreen = ({ navigation }) => {
           style={styles.textInput}
         />
         <SelectImage onSelectImage={(imageUri) => setSelectedImage(imageUri)} />
-        <SelectLocation navigation={navigation} />
+        <SelectLocation
+          navigation={navigation}
+          onSelectLocation={(location) => setSelectedLocation(location)}
+        />
         <Button
           title="Save Place"
           color={Colors.primary}
