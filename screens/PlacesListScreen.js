@@ -11,9 +11,9 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
-  }
-})
+    alignItems: "center",
+  },
+});
 
 const PlacesListScreen = ({ navigation }) => {
   const places = useSelector((state) => state.places.places);
@@ -35,7 +35,7 @@ const PlacesListScreen = ({ navigation }) => {
             address={null}
             onSelect={() => navigation.navigate("PlaceDetail", {
               id: itemData.item.id,
-              title: itemData.item.title
+              title: itemData.item.title,
             })}
           />
         )}
@@ -54,7 +54,7 @@ PlacesListScreen.navigationOptions = ({ navigation }) => ({
         onPress={() => navigation.navigate("NewPlace")}
       />
     </HeaderButtons>
-  )
+  ),
 });
 
 export default PlacesListScreen;

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, Button, Alert, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View, Text, Button, Alert, StyleSheet, ActivityIndicator,
+} from "react-native";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 
@@ -9,7 +11,7 @@ import MapLocation from "./MapLocation";
 const styles = StyleSheet.create({
   locationSelect: {
     alignItems: "center",
-    marginBottom: 15
+    marginBottom: 15,
   },
   locationPreview: {
     width: "100%",
@@ -18,15 +20,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#ccc"
+    borderColor: "#ccc",
   },
   text: {
     fontSize: 14,
-    fontFamily: "open-sans"
-  }
+    fontFamily: "open-sans",
+  },
+  actions: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+  },
 });
 
-const SelectLocation = () => {
+const SelectLocation = ({ navigation }) => {
   const [pickedLoaction, setPickedLocation] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,7 +43,7 @@ const SelectLocation = () => {
       Alert.alert(
         "Insufficient permissions!",
         "You need to gtant location permissions to use this app.",
-        [{ text: "Okey" }]
+        [{ text: "Okey" }],
       );
       return false;
     }
@@ -53,32 +60,47 @@ const SelectLocation = () => {
       const userLocation = await Location.getCurrentPositionAsync();
       setPickedLocation({
         lat: userLocation.coords.latitude,
-        lng: userLocation.coords.longitude
+        lng: userLocation.coords.longitude,
       });
     } catch (err) {
       Alert.alert(
         "Could not fetch location!",
         "Please try again later or pick a location on the map.",
-        [{ text: "Okey" }]
+        [{ text: "Okey" }],
       );
     }
     setIsLoading(false);
   };
 
+  const handlePickOnMap = () => {
+    navigation.navigate("Map");
+  };
+
   return (
     <View style={styles.locationSelect}>
-      <MapLocation style={styles.locationPreview} location={pickedLoaction}>
+      <MapLocation
+        style={styles.locationPreview}
+        location={pickedLoaction}
+        onPress={handlePickOnMap}
+      >
         {isLoading ? (
           <ActivityIndicator size="small" color={Colors.primary} />
         ) : (
           <Text style={styles.text}>No location chosen yet!</Text>
         )}
       </MapLocation>
-      <Button
-        title="Get User Location"
-        color={Colors.primary}
-        onPress={handlePickerLocation}
-      />
+      <View style={styles.actions}>
+        <Button
+          title="Get User Location"
+          color={Colors.primary}
+          onPress={handlePickerLocation}
+        />
+        <Button
+          title="Pick on Map"
+          color={Colors.primary}
+          onPress={handlePickOnMap}
+        />
+      </View>
     </View>
   );
 };

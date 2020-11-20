@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, ScrollView, StyleSheet, Alert } from "react-native";
+import {
+  View, Text, TextInput, Button, ScrollView, StyleSheet, Alert,
+} from "react-native";
 import { useDispatch } from "react-redux";
 
 import SelectImage from "../components/SelectImage";
@@ -9,12 +11,12 @@ import * as placesActions from "../store/placesActions";
 
 const styles = StyleSheet.create({
   form: {
-    margin: 30
+    margin: 30,
   },
   label: {
     marginBottom: 15,
     fontSize: 18,
-    fontFamily: "open-sans"
+    fontFamily: "open-sans",
   },
   textInput: {
     fontSize: 18,
@@ -23,9 +25,9 @@ const styles = StyleSheet.create({
     borderBottomColor: "#ccc",
     paddingHorizontal: 2,
     paddingVertical: 4,
-    marginBottom: 15
-  }
-})
+    marginBottom: 15,
+  },
+});
 
 const NewPlaceScreen = ({ navigation }) => {
   const [title, setTitle] = useState("");
@@ -51,7 +53,7 @@ const NewPlaceScreen = ({ navigation }) => {
           style={styles.textInput}
         />
         <SelectImage onSelectImage={(imageUri) => setSelectedImage(imageUri)} />
-        <SelectLocation />
+        <SelectLocation navigation={navigation} />
         <Button
           title="Save Place"
           color={Colors.primary}
@@ -63,7 +65,7 @@ const NewPlaceScreen = ({ navigation }) => {
 };
 
 NewPlaceScreen.navigationOptions = {
-  headerTitle: "New Place"
+  headerTitle: "New Place",
 };
 
 export default NewPlaceScreen;
